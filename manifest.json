@@ -1,0 +1,64 @@
+{
+  "manifest_version": 3,
+  "name": "LeetCode GitSync",
+  "version": "1.0.1",
+  "description": "Sync your LeetCode solutions directly to your GitHub repository with a single click.",
+
+
+  "permissions": [
+    "storage",
+    "activeTab"
+  ],
+
+
+  "host_permissions": [
+    "https://leetcode.com/*",
+    "https://api.github.com/*"
+  ],
+
+
+  "action": {
+    "default_popup": "popup/popup.html",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+
+
+  "background": {
+    "service_worker": "background.js"
+  },
+
+
+  "content_scripts": [
+    {
+      "matches": ["https://leetcode.com/problems/*"],
+      "js": ["scripts/content.js"],
+      "css": ["scripts/content.css"],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": ["https://leetcode.com/problems/*"],
+      "js": ["scripts/inject.js"],
+      "run_at": "document_start",
+      "world": "MAIN"
+    }
+  ],
+
+
+  "web_accessible_resources": [
+    {
+      "resources": ["scripts/inject.js"],
+      "matches": ["https://leetcode.com/*"]
+    }
+  ],
+
+
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  }
+}

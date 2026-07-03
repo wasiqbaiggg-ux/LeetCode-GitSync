@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LeetCode GitSync</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="popup.css">
+</head>
+
+<body>
+<div class="app-container">
+
+<header class="app-header">
+<div class="logo-area">
+<svg class="logo-icon" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.603-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.464-1.11-1.464-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.831.092-.646.35-1.086.636-1.336-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.579.688.481C19.137 20.162 22 16.418 22 12c0-5.523-4.477-10-10-10z"/>
+</svg>
+<span class="app-title">GitSync <span class="badge">v1.0</span></span>
+</div>
+
+<div class="status-badge disconnected" id="connection-status">
+<span class="pulse-dot"></span>
+<span class="status-text">Offline</span>
+</div>
+</header>
+
+<main class="app-main">
+
+<section class="step-pane active" id="pane-auth">
+<h2 class="pane-title">Connect GitHub Account</h2>
+<p class="pane-subtitle">Enter a Personal Access Token (PAT) with <strong>repo</strong> permissions to sync your work.</p>
+
+<div class="input-group">
+<label for="input-pat" class="input-label">Personal Access Token</label>
+
+<div class="pat-input-wrapper">
+<input type="password" id="input-pat" placeholder="Enter your Personal Access Token" autocomplete="off">
+<button class="toggle-password-btn" id="btn-toggle-pat" type="button" title="Toggle visibility">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+<circle cx="12" cy="12" r="3"></circle>
+</svg>
+</button>
+</div>
+
+<span class="helper-text">
+Don't have one?
+<a href="https://github.com/settings/tokens/new?scopes=repo&description=LeetCode%20GitSync" target="_blank" class="text-link">Generate token here &nearr;</a>
+</span>
+</div>
+
+<button class="btn btn-primary" id="btn-verify-token">
+<span>Verify & Connect</span>
+</button>
+
+<div class="error-msg" id="auth-error"></div>
+</section>
+
+<section class="step-pane" id="pane-setup">
+
+<div class="user-profile-header">
+<div class="avatar" id="user-avatar">?</div>
+
+<div class="profile-info">
+<span class="user-greeting">Welcome,</span>
+<span class="username" id="github-username">@username</span>
+</div>
+</div>
+
+<h2 class="pane-title text-left">Configure Repository</h2>
+
+<div class="tabs">
+<button class="tab-btn active" id="tab-select-repo">Choose Existing</button>
+<button class="tab-btn" id="tab-create-repo">Create New</button>
+</div>
+
+<div class="tab-content active" id="content-select-repo">
+<div class="input-group">
+<label for="select-repo" class="input-label">Select Repository</label>
+<select id="select-repo">
+<option value="" disabled selected>Loading repositories...</option>
+</select>
+</div>
+</div>
+
+<div class="tab-content" id="content-create-repo">
+<div class="input-group">
+<label for="new-repo-name" class="input-label">Repository Name</label>
+<input type="text" id="new-repo-name" placeholder="leetcode-solutions">
+<span class="helper-text">The repository will be created privately with a README.md file.</span>
+</div>
+</div>
+
+<div class="input-group">
+<label for="input-branch" class="input-label">Branch Name</label>
+<input type="text" id="input-branch" value="main" placeholder="main">
+</div>
+
+<button class="btn btn-primary" id="btn-save-setup">
+<span>Complete Setup</span>
+</button>
+
+<div class="error-msg" id="setup-error"></div>
+</section>
+
+<section class="step-pane" id="pane-dashboard">
+
+<div class="success-card">
+<div class="success-glow"></div>
+
+<div class="success-icon">
+<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+<polyline points="20 6 9 17 4 12"></polyline>
+</svg>
+</div>
+
+<h3 class="card-title">Extension Active</h3>
+<p class="card-desc">Your solutions will now sync seamlessly to your GitHub repo.</p>
+</div>
+
+<div class="meta-list">
+<div class="meta-item">
+<span class="meta-label">User</span>
+<span class="meta-val" id="dash-username">@username</span>
+</div>
+
+<div class="meta-item">
+<span class="meta-label">Repository</span>
+<a href="#" target="_blank" class="meta-val text-link" id="dash-repo">owner/repo-name</a>
+</div>
+
+<div class="meta-item">
+<span class="meta-label">Branch</span>
+<span class="meta-val" id="dash-branch">main</span>
+</div>
+</div>
+
+<div class="btn-group">
+<button class="btn btn-outline" id="btn-reset">
+<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+<path d="M23 4v6h-6"></path>
+<path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path>
+</svg>
+<span>Change Settings</span>
+</button>
+</div>
+
+</section>
+
+</main>
+
+<footer class="app-footer">
+<span>Made with &hearts; for developers</span>
+</footer>
+
+</div>
+
+<script src="popup.js"></script>
+
+</body>
+</html>
